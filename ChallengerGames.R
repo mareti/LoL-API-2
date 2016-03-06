@@ -7,7 +7,7 @@ challengerTimelines <- function() {
     path <- "../LoL Data/challenger matches"
     file <- dir(path, pattern=".json", full.names=TRUE, recursive=FALSE)
     
-    for (i in 1:2) { #length(file)) {
+    for (i in 1:length(file)) {
         df1 <- fromJSON(file[i])
         df2 <- fromJSON(file[i], flatten=TRUE)
         matchId <- df1$matchId
@@ -30,24 +30,24 @@ challengerTimelines <- function() {
         
         teamData <- getTeamData(df1, matchId)
         participantData <- getParticipantData(df1, matchId)
-        positionData <- getPositions(df2, matchId)
+        timelineData <- getPositions(df2, matchId)
         
-        if (!exists("teamDataExtract")) {
-            teamDataExtract <- teamData
-            participantDataExtract <- participantData
-            positionDataExtract <- positionData
+        if (!exists("teamExtract")) {
+            teamExtract <- teamData
+            participantExtract <- participantData
+            timelineExtract <- timelineData
         } 
         else {
-            teamDataExtract <- rbind(teamDataExtract, teamData)
-            participantDataExtract <- rbind(participantDataExtract, participantData)
-            positionDataExtract <- rbind(positionDataExtract, positionData)
+            teamExtract <- rbind(teamExtract, teamData)
+            participantExtract <- rbind(participantExtract, participantData)
+            timelineExtract <- rbind(timelineExtract, timelineData)
         }
         
         print(paste(i, "-", basename(file[i])))
     }
-    print(teamDataExtract)
-    print(participantDataExtract)
-    print(positionDataExtract)
+    write.csv(teamExtract, file="../LoL Extracts/Team Results.csv")
+    write.csv(participantExtract, file="../LoL Extracts/Participant Details.csv")
+    write.csv(timelineExtract, file="../LoL Extracts/Timeline Details.csv")
 }
 
 getTeamData <- function(df, matchId) {
