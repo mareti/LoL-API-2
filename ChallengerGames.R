@@ -13,17 +13,18 @@ challengerTimelines <- function() {
         matchId <- df1$matchId
         
         if (df1$matchMode != "CLASSIC") {
-            print(paste(i, "-", file[i], "is not CLASSIC"))
+            print(paste(i, "-", basename(file[i]), "is not CLASSIC"))
             next
         }
         
         if (df1$matchType != "MATCHED_GAME") {
-            print(paste(i, "-", file[i], "is not MATCHED_GAME"))
+            print(paste(i, "-", basename(file[i]), "is not MATCHED_GAME"))
             next
         }
         
         if (df1$queueType != "TEAM_BUILDER_DRAFT_RANKED_5x5") {
-            print(paste(i, "-", file[i], "is not TEAM_BUILDER_DRAFT_RANKED_5x5"))
+            print(paste(i, "-", basename(file[i])
+                        , "is not TEAM_BUILDER_DRAFT_RANKED_5x5"))
             next
         }
         
@@ -31,7 +32,7 @@ challengerTimelines <- function() {
         participantData <- getParticipantData(df1, matchId)
         positionData <- getPositions(df2, matchId)
         
-        if (i==1) {
+        if (!exists("teamDataExtract")) {
             teamDataExtract <- teamData
             participantDataExtract <- participantData
             positionDataExtract <- positionData
